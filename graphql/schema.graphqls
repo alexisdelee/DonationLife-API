@@ -1,0 +1,22 @@
+scalar Any
+
+type Query {
+  auth: Auth!
+  employee: Employee!
+}
+
+type Auth {
+  email: String!
+  password: String!
+}
+
+type Employee {
+  id: Int
+  username: String!
+  password: String!
+  firstname: String!
+  lastname: String!
+  level: Int!
+  email: String!
+  gender: String!
+}

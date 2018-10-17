@@ -1,0 +1,23 @@
+{
+  "name": "DonationLife",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.4",
+    "graphql": "^14.0.2",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.3.4",
+    "nodemon": "^1.18.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start:dev": "nodemon --watch . -L index.js dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
