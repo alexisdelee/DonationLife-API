@@ -3,6 +3,7 @@ type Query {
     vaccine: Vaccine!
     medicalForm: MedicalForm!
     user: User!
+    collect: Collect!
 }
 
 type Allergen {
@@ -51,7 +52,17 @@ type User {
     bloodType: String!
     isAdmin: Boolean!
     sexualOrientation: String!
-    allergens: [OrderAllergen!]!
-    vaccines: [OrderVaccine!]!
-    medicalForm: MedicalForm!
+    allergens: [OrderAllergen!]
+    vaccines: [OrderVaccine!]
+    medicalForm: MedicalForm
+}
+
+type Collect {
+    latitude: Float!
+    longitude: Float!
+    distance: Int!
+    name: String!
+    where: String!
+    start: String!
+    stop: String!
 }

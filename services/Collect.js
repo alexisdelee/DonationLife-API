@@ -7,18 +7,25 @@ module.exports = class Collect {
         return new Collect();
     }
 
-    find(criteria) {
-        // do something
-    }
-
     static findAllNear(latitude, longitude) {
         return new Promise(async (resolve, reject) => {
             try {
-                const collects = await axios.get("http://api.openeventdatabase.org/event/?what=health.blood.collect&when=nextweek&near=" + 
-                    [ latitude, longitude, 50000 ].join(","));
+                const response = await axios.get("http://api.openeventdatabase.org/event/?what=health.blood.collect&when=nextweek&near=" + 
+                    [longitude,latitude, 50000].join(","));
 
-                // faire ensuite un reduce
-                resolve(collects.data);
+                resolve(
+                    response.data.features.map(collect => {
+                        return {
+                            latitude: collect.properties.lat,
+                            longitude: collect.properties.lon,
+                            distance: collect.properties.distance,
+                            name: collect.properties.name,
+                            where: collect.properties["where:name"],
+                            start: collect.properties.start,
+                            stop: collect.properties.stop
+                        };
+                    })
+                );
             } catch (e) { reject(e); }
         });
     }

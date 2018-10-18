@@ -62,14 +62,23 @@ endpoint.get("/current", [middleware.authentication(Role.User)], async (request,
  */
 endpoint.put("/current/upmedicaldata", [middleware.authentication(Role.User), middleware.graphql("user.update")], async (request, response) => {
     try {
-        const user = {
-            ...(new User()),
-            ...{
-                allergens: request.body.user.allergens,
-                vaccines: request.body.user.vaccines,
-                medicalForm: request.body.user.medicalForm
-            }
-        };
+        const user = new User(
+            null,
+            Role.User.name,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            request.body.user.allergens,
+            request.body.user.vaccines,
+            request.body.user.medicalForm
+        );
 
         await user.saveMedicalData();
 

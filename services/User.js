@@ -1,5 +1,7 @@
 const Exception = require("../exceptions");
 const UserModel = require("../models").User;
+const Role = require("./Role");
+const Authencation = require("./Authentication");
 
 
 module.exports = class User {
@@ -48,7 +50,7 @@ module.exports = class User {
             try {
                 const user = await User.Instance.find({
                     email,
-                    password
+                    password: Authencation.hash(password)
                 });
 
                 if (user) {
@@ -69,17 +71,24 @@ module.exports = class User {
                     firstname: self.firstname,
                     lastname: self.lastname,
                     email: self.email,
-                    password: self.password,
+                    password: Authencation.hash(self.password),
                     age: self.age,
                     gender: self.gender,
                     phone: self.phone,
                     address: self.address,
                     bloodType: self.bloodType,
-                    sexualOrientation: self.sexualOrientation/*,
-                    allergens,
-                    vaccines,
-                    medicalForm*/
+                    sexualOrientation: self.sexualOrientation,
+                    isAdmin: self.role == Role.Admin.name,
+                    allergens: null,
+                    vaccines: null,
+                    medicalForm: null
                 });
+
+                if (self.age < 18) {
+                    throw new Exception.BadRequest("you must be of legal age");
+                } else if (self.phone.length != 10) {
+                    throw new Exception.BadRequest("please enter a valid phone number");
+                }
 
                 const user = await userModel.save();
                 resolve(user);

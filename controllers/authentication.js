@@ -28,6 +28,7 @@ endpoint.post("/sign", [middleware.graphql("user.sign")], async (request, respon
 
         response.status(200).json({
             data: {
+                user,
                 token: Authentication.getToken({
                     role: user.isAdmin ? Role.Admin.name : Role.User.name,
                     userId: user._id
@@ -47,15 +48,28 @@ endpoint.post("/sign", [middleware.graphql("user.sign")], async (request, respon
  */
 endpoint.post("/register", [middleware.graphql("user.register")], async (request, response) => {
     try {
-        const user = {
-            ...(new User(null, Role.User)),
-            ...request.body.user,
-            isAdmin: false
-        };
+        const user = new User(
+            null,
+            Role.User.name,
+            request.body.user.firstname,
+            request.body.user.lastname,
+            request.body.user.email,
+            request.body.user.password,
+            request.body.user.age,
+            request.body.user.gender,
+            request.body.user.phone,
+            request.body.user.address,
+            request.body.user.bloodType,
+            request.body.user.sexualOrientation
+        );
 
         response.status(200).json({
             data: {
-                user // await user.save()
+                user: await user.save(),
+                token: Authentication.getToken({
+                    role: user.isAdmin ? Role.Admin.name : Role.User.name,
+                    userId: user._id
+                })
             }
         });
     } catch (e) {

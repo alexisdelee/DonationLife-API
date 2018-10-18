@@ -52,18 +52,15 @@ const UserSchema = mongoose.Schema({
     },
     allergens: [{
         type: mongoose.Schema.ObjectId,
-        ref: "OrderAllergen",
-        required: true
+        ref: "OrderAllergen"
     }],
     vaccines: [{
         type: mongoose.Schema.ObjectId,
-        ref: "OrderVaccine",
-        required: true
+        ref: "OrderVaccine"
     }],
     medicalForm: {
         type: mongoose.Schema.ObjectId,
-        ref: "MedicalForm",
-        required: true
+        ref: "MedicalForm"
     }
 });
   

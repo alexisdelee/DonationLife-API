@@ -6,7 +6,6 @@ const cors = require("cors");
 const Exception = require("../exceptions");
 const middleware = require("./middlewares");
 const Role = require("../services/Role");
-const User = require("../services/User");
 const Collect = require("../services/Collect");
 
 
@@ -18,15 +17,15 @@ endpoint.use(cors());
 
 /**
  * Get all blood collects near current user
- * external: JSON Web Token
+ * external: JSON Web Token | GraphQL
  * access: user & admin
- * POST /collects/near
+ * POST /collects/current/near
  */
-endpoint.get("/near", [middleware.authentication(Role.User)], async (request, response) => {
+endpoint.post("/current/near", [middleware.authentication(Role.User), middleware.graphql("collect.getnear")], async (request, response) => {
     try {
         response.status(200).json({
             data: {
-                user: await Collect.findAllNear(2.3822, 48.8817) // await Collect.findAllNear(request.query.collect.latitude, request.query.collect.longitude)
+                collect: await Collect.findAllNear(request.body.collect.latitude, request.body.collect.longitude)
             }
         });
     } catch (e) {

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const models = require("../models");
+const Authentication = require("../services/Authentication");
 
 
 mongoose.Promise = global.Promise;
@@ -32,74 +33,45 @@ mongoose.connect("mongodb://localhost:27017/blood");
                     { name: "Rougeole/Rubéole" },
                 ]
             },
-            medicalForms: {
-              model: models.MedicalForms,
-              values: [
-                {
-                  isTattooed: false,
-                  dateTattooCreation: null,
-                  isPiercing: false,
-                  datePiercingCreation: null,
-                  medicalVisit: "- de trois mois",
-                  isPregnant: false,
-                  isSmoker: true,
-                  voyage: "- de quatre mois",
-                  vayagePlace: "Suisse"
-                },
-                {
-                  isTattooed: true,
-                  dateTattooCreation: "23/04/18",
-                  isPiercing: true,
-                  datePiercingCreation: "12/05/18",
-                  medicalVisit: "+ de trois mois",
-                  isPregnant: false,
-                  isSmoker: false,
-                  voyage: "+ de quatre mois",
-                  vayagePlace: "Espagne"
-                },
-              ]
-            }
             users: {
-              model: models.User,
-              values: [
-                {
-                  firstname: "Jean",
-                  lastname: "Dupond",
-                  email: "jean.dupond@gmail.com",
-                  password: "azerty",
-                  age: "45",
-                  gender: "Homme",
-                  phone: "0123456789",
-                  address: "10 rue des champs",
-                  bloodType: "AB+",
-                  isAdmin: true,
-                  sexualOrientation: "hétérosexuel"
-                },
-                {
-                  firstname: "Emma",
-                  lastname: "Dubois",
-                  email: "emma.dubois@gmail.com",
-                  password: "azerty",
-                  age: "25",
-                  gender: "Femme",
-                  phone: "0123456798",
-                  address: "35 boulevard des prairies",
-                  bloodType: "O-",
-                  isAdmin: false,
-                  sexualOrientation: "hétérosexuel"
-                }
-
-
-              ]
+                model: models.User,
+                values: [
+                    {
+                        firstname: "Jean",
+                        lastname: "Dupond",
+                        email: "jean.dupond@gmail.com",
+                        password: Authentication.hash("azerty"),
+                        age: 45,
+                        gender: "Homme",
+                        phone: "0123456789",
+                        address: "10 rue des champs",
+                        bloodType: "AB+",
+                        sexualOrientation: "hétérosexuel",
+                        isAdmin: false
+                    },
+                    {
+                        firstname: "Emma",
+                        lastname: "Dubois",
+                        email: "emma.dubois@gmail.com",
+                        password: Authentication.hash("azerty"),
+                        age: 25,
+                        gender: "Femme",
+                        phone: "0123456798",
+                        address: "35 boulevard des prairies",
+                        bloodType: "O-",
+                        sexualOrientation: "hétérosexuel",
+                        isAdmin: false
+                    }
+                ]
             }
         };
 
+        // <<< clear
+        await mongoose.connection.dropDatabase();
+        // clear >>>
+
         for (const key of Object.keys(data)) {
             const schema = data[key];
-
-            // <<< clear
-            await schema.model.remove({});
-            // clear >>>
 
             for (const value of schema.values) {
                 const schemaModel = new schema.model(value);
