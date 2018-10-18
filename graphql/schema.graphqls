@@ -1,22 +1,47 @@
-scalar Any
-
 type Query {
-  auth: Auth!
-  employee: Employee!
+    allergen: Allergen!
+    vaccine: Vaccine!
+    medicalForm: MedicalForm!
+    user: User!
 }
 
-type Auth {
-  email: String!
-  password: String!
+type Allergen {
+    _id: String!
+    ingredient: String!
+    selected: Boolean!
 }
 
-type Employee {
-  id: Int
-  username: String!
-  password: String!
-  firstname: String!
-  lastname: String!
-  level: Int!
-  email: String!
-  gender: String!
+type Vaccine {
+    _id: String!
+    name: String!
+    selected: String!
+}
+
+type MedicalForm {
+    _id: String!
+    dateTattooCreation: String!
+    datePiercingCreation: String!
+    medicalVisit: String!
+    isPregnant: Boolean!
+    isSmoker: Boolean!
+    voyage: String!
+    voyagePlace: String!
+}
+
+type User {
+    _id: String!
+    firstname: String!
+    lastname: String!
+    email: String!
+    password: String!
+    age: Number!
+    gender: String!
+    phone: String!
+    address: String!
+    bloodType: String!
+    isAdmin: Boolean!
+    sexualOrientation: String!
+    allergens: [Allergen!]!
+    vaccines: [Vaccine!]!
+    medicalForm: MedicalForm!
 }

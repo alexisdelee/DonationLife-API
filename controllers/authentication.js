@@ -22,9 +22,9 @@ endpoint.use(cors());
  * access: all
  * POST /authentication/sign
  */
-endpoint.post("/sign", [middleware.graphql("auth.sign")], async (request, response) => {
+endpoint.post("/sign", [middleware.graphql("user.sign")], async (request, response) => {
     try {
-        const user = await User.sign(request.body.auth.email, request.body.auth.password);
+        const user = await User.sign(request.body.user.email, request.body.user.password);
 
         response.status(200).json({
             data: {
@@ -45,9 +45,9 @@ endpoint.post("/sign", [middleware.graphql("auth.sign")], async (request, respon
  * access: all
  * POST /authentication/register
  */
-endpoint.post("/register", [middleware.graphql("auth.register")], async (request, response) => {
+endpoint.post("/register", [middleware.graphql("user.register")], async (request, response) => {
     try {
-        const user = new User(null, Role.User, request.body.auth.email, request.body.auth.password);
+        const user = new User(null, Role.User, request.body.user.email, request.body.user.password);
 
         response.status(200).json({
             data: {

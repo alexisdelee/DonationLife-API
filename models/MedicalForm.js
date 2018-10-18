@@ -2,16 +2,8 @@ const mongoose = require("mongoose");
 
 
 const MedicalFormSchema = mongoose.Schema({
-    isTattooed: {
-        type: Boolean,
-        required: true
-    },
     dateTattooCreation: {
         type: String,
-        required: true
-    },
-    isPiercing: {
-        type: Boolean,
         required: true
     },
     datePiercingCreation: {

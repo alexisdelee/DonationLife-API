@@ -1,0 +1,32 @@
+{
+    user {
+        firstname
+        lastname
+        email
+        password
+        age
+        gender
+        phone
+        address
+        bloodType
+        isAdmin
+        sexualOrientation
+        allergens {
+            ingredient
+            selected
+        }
+        vaccines {
+            name
+            selected
+        }
+        medicalForm {
+            dateTattooCreation
+            datePiercingCreation
+            medicalVisit
+            isPregnant
+            isSmoker
+            voyage
+            voyagePlace
+        }
+    }
+}

@@ -2,14 +2,14 @@ const mongoose = require("mongoose");
 
 
 const UserSchema = mongoose.Schema({
-    /*firstname: {
+    firstname: {
         type: String,
         required: true
     },
     lastname: {
         type: String,
         required: true
-    },*/
+    },
     email: {
         type: String,
         required: true,
@@ -18,9 +18,9 @@ const UserSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
-    }/*,
+    },
     age: {
-        type: String,
+        type: Number,
         required: true
     },
     gender: {
@@ -40,11 +40,16 @@ const UserSchema = mongoose.Schema({
         type: String,
         enum: [ "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-" ],
         required: true
-    }*/,
+    },
     isAdmin: {
         type: Boolean,
         required: true
-    }/*,
+    },
+    sexualOrientation: {
+        type: String,
+        enum: [ "hétérosexuel", "bisexuel", "homosexuel" ],
+        required: true
+    },
     allergens: [{
         type: mongoose.Schema.ObjectId,
         ref: "Allergen",
@@ -59,12 +64,7 @@ const UserSchema = mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: "MedicalForm",
         required: true
-    },
-    sexualOrientation: {
-        type: String,
-        enum: [ "hétérosexuel", "bisexuel", "homosexuel" ],
-        required: true
-    }*/
+    }
 });
   
 
