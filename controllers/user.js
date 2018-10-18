@@ -36,7 +36,8 @@ endpoint.get("/", [middleware.authentication(Role.Admin)], async (request, respo
 
 /**
  * Get current user
- * external : JSON Web Token
+ * external: JSON Web Token
+ * access: user & admin
  * GET /users/current
  */
 endpoint.get("/current", [middleware.authentication(Role.User)], async (request, response) => {
@@ -47,6 +48,33 @@ endpoint.get("/current", [middleware.authentication(Role.User)], async (request,
             data: {
                 user: await user.find({ _id: user.id })
             }
+        });
+    } catch (e) {
+        response.status(e.code < 600 ? e.code : Exception.InternalError.code).json({ errors: [e.message] });
+    }
+});
+
+/**
+ * Update current user with medical data
+ * external: JSON Web Token
+ * access: user & admin
+ * PUT /users/current/upmedicaldata
+ */
+endpoint.put("/current/upmedicaldata", [middleware.authentication(Role.User), middleware.graphql("user.update")], async (request, response) => {
+    try {
+        const user = {
+            ...(new User()),
+            ...{
+                allergens: request.body.user.allergens,
+                vaccines: request.body.user.vaccines,
+                medicalForm: request.body.user.medicalForm
+            }
+        };
+
+        await user.saveMedicalData();
+
+        response.status(200).json({
+            data: {}
         });
     } catch (e) {
         response.status(e.code < 600 ? e.code : Exception.InternalError.code).json({ errors: [e.message] });

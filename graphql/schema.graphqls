@@ -51,7 +51,7 @@ type User {
     bloodType: String!
     isAdmin: Boolean!
     sexualOrientation: String!
-    allergens: [OrderAllergen!]
-    vaccines: [OrderVaccine!]
-    medicalForm: MedicalForm
+    allergens: [OrderAllergen!]!
+    vaccines: [OrderVaccine!]!
+    medicalForm: MedicalForm!
 }

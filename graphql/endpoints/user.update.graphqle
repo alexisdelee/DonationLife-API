@@ -1,0 +1,35 @@
+{
+    user {
+        firstname
+        lastname
+        email
+        password
+        age
+        gender
+        phone
+        address
+        bloodType
+        sexualOrientation
+        allergens {
+            allergen {
+                _id
+            }
+            selected
+        }
+        vaccines {
+            vaccine {
+                _id
+            }
+            selected
+        }
+        medicalForm {
+            dateTattooCreation
+            datePiercingCreation
+            medicalVisit
+            isPregnant
+            isSmoker
+            voyage
+            voyagePlace
+        }
+    }
+}

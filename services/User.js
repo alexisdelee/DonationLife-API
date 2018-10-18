@@ -61,19 +61,21 @@ module.exports = class User {
     }
 
     save() {
+        const self = this;
+
         return new Promise(async (resolve, reject) => {
             try {
                 const userModel = new UserModel({
-                    firstname,
-                    lastname,
-                    email: this.email,
-                    password: this.password,
-                    age,
-                    gender,
-                    phone,
-                    address,
-                    bloodType,
-                    sexualOrientation/*,
+                    firstname: self.firstname,
+                    lastname: self.lastname,
+                    email: self.email,
+                    password: self.password,
+                    age: self.age,
+                    gender: self.gender,
+                    phone: self.phone,
+                    address: self.address,
+                    bloodType: self.bloodType,
+                    sexualOrientation: self.sexualOrientation/*,
                     allergens,
                     vaccines,
                     medicalForm*/
@@ -81,6 +83,24 @@ module.exports = class User {
 
                 const user = await userModel.save();
                 resolve(user);
+            } catch (e) { reject(e); }
+        });
+    }
+
+    saveMedicalData() {
+        const self = this;
+
+        return new Promise(async (resolve, reject) => {
+            try {
+                await UserModel.findByIdAndUpdate(self.id, {
+                    $set: {
+                        allergens: self.allergens,
+                        vaccines: self.vaccines,
+                        medicalForm: self.medicalForm
+                    }
+                });
+
+                resolve();
             } catch (e) { reject(e); }
         });
     }
