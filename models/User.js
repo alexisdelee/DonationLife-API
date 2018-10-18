@@ -52,12 +52,12 @@ const UserSchema = mongoose.Schema({
     },
     allergens: [{
         type: mongoose.Schema.ObjectId,
-        ref: "Allergen",
+        ref: "OrderAllergen",
         required: true
     }],
     vaccines: [{
         type: mongoose.Schema.ObjectId,
-        ref: "Vaccine",
+        ref: "OrderVaccine",
         required: true
     }],
     medicalForm: {

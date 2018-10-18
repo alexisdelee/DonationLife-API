@@ -7,14 +7,24 @@ type Query {
 
 type Allergen {
     _id: String!
-    ingredient: String!
+    name: String!
+}
+
+type OrderAllergen {
+    _id: String!
+    allergen: Allergen!
     selected: Boolean!
 }
 
 type Vaccine {
     _id: String!
     name: String!
-    selected: String!
+}
+
+type OrderVaccine {
+    _id: String!
+    vaccine: Vaccine!
+    selected: Boolean!
 }
 
 type MedicalForm {
@@ -34,14 +44,14 @@ type User {
     lastname: String!
     email: String!
     password: String!
-    age: Number!
+    age: Float!
     gender: String!
     phone: String!
     address: String!
     bloodType: String!
     isAdmin: Boolean!
     sexualOrientation: String!
-    allergens: [Allergen!]!
-    vaccines: [Vaccine!]!
-    medicalForm: MedicalForm!
+    allergens: [OrderAllergen!]
+    vaccines: [OrderVaccine!]
+    medicalForm: MedicalForm
 }

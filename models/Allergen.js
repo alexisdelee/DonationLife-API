@@ -2,14 +2,10 @@ const mongoose = require("mongoose");
 
 
 const AllergenSchema = mongoose.Schema({
-    ingredient: {
+    name: {
         type: String,
         required: true,
         unique: true
-    },
-    selected: {
-        type: Boolean,
-        required: true
     }
 });
   

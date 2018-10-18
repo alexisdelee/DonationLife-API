@@ -15,7 +15,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start:dev": "nodemon --watch . -L index.js dev"
+    "start:dev": "nodemon --watch . -L index.js dev",
+    "start:db": "mongod --dbpath db --port 27017"
   },
   "keywords": [],
   "author": "",

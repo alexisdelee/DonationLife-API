@@ -6,10 +6,6 @@ const VaccineSchema = mongoose.Schema({
         type: String,
         required: true,
         unique: true
-    },
-    selected: {
-        type: Boolean,
-        required: true
     }
 });
   

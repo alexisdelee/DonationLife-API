@@ -41,17 +41,21 @@ endpoint.post("/sign", [middleware.graphql("user.sign")], async (request, respon
 
 /**
  * Add a new user
- * external: JSON Web Token | GraphQL
+ * external: GraphQL
  * access: all
  * POST /authentication/register
  */
 endpoint.post("/register", [middleware.graphql("user.register")], async (request, response) => {
     try {
-        const user = new User(null, Role.User, request.body.user.email, request.body.user.password);
+        const user = {
+            ...(new User(null, Role.User)),
+            ...request.body.user,
+            isAdmin: false
+        };
 
         response.status(200).json({
             data: {
-                user: await user.save()
+                user // await user.save()
             }
         });
     } catch (e) {

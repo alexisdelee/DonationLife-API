@@ -3,11 +3,22 @@ const UserModel = require("../models").User;
 
 
 module.exports = class User {
-    constructor(id, role, email, password) {
+    constructor(id, role, firstname, lastname, email, password, age, gender, phone, address, bloodType, sexualOrientation, allergens, vaccines, medicalForm) {
         this.id = id;
         this.role = role;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
         this.password = password;
+        this.age = age;
+        this.gender = gender;
+        this.phone = phone;
+        this.address = address;
+        this.bloodType = bloodType;
+        this.sexualOrientation = sexualOrientation;
+        this.allergens = allergens;
+        this.vaccines = vaccines;
+        this.medicalForm = medicalForm;
     }
 
     static get Instance() {
@@ -53,9 +64,19 @@ module.exports = class User {
         return new Promise(async (resolve, reject) => {
             try {
                 const userModel = new UserModel({
+                    firstname,
+                    lastname,
                     email: this.email,
                     password: this.password,
-                    isAdmin: false
+                    age,
+                    gender,
+                    phone,
+                    address,
+                    bloodType,
+                    sexualOrientation/*,
+                    allergens,
+                    vaccines,
+                    medicalForm*/
                 });
 
                 const user = await userModel.save();

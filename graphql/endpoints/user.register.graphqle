@@ -9,14 +9,17 @@
         phone
         address
         bloodType
-        isAdmin
         sexualOrientation
         allergens {
-            ingredient
+            allergen {
+                _id
+            }
             selected
         }
         vaccines {
-            name
+            vaccine {
+                _id
+            }
             selected
         }
         medicalForm {
