@@ -1,0 +1,194 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            #map {
+                height: 100%;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="map"></div>
+
+        <script>
+            function getNearCollects(user, token) {
+                return new Promise(async (resolve, reject) => {
+                    const collects = await (() => {
+                        return fetch("http://localhost:3000/collects/current/near", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "x-access-token": token
+                            },
+                            body: JSON.stringify({
+                                collect: {
+                                    latitude: user.latitude,
+                                    longitude: user.longitude
+                                }
+                            })
+                        });
+                    })();
+                    const data = await collects.json();
+                    const locations = data.data.collect.map((item, index) => {
+                        return [item.name, item.latitude, item.longitude, index + 2];
+                    });
+
+                    resolve(locations);
+                });
+            }
+
+            async function initMap() {
+                const user = await (() => {
+                    return fetch("http://api.ipstack.com/check?access_key=ffccedd4a2b191cd0eb492140ffbd84a");
+                })();
+                const data = await user.json();
+
+                const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6IjViYzkwMzVlYzk3N2U5MDgwYzEzMDRlZCIsImlhdCI6MTUzOTkwMDY4NSwiZXhwIjoxNTM5OTA0Mjg1fQ.AN2U99plRdzqyBOkInBKAMz6bUCYGLHHfVOWZiI5Uu0";
+                const locations = [["Position actuelle approximatif", data.latitude, data.longitude, 1], ...(await getNearCollects(data, token))].reverse();
+                // const locations = [["Position actuelle approximatif", data.latitude, data.longitude, 1], ["test", 48.3, 2, 2]].reverse();
+                console.log(locations);
+
+                var styledMapType = new google.maps.StyledMapType(
+                [ { elementType: "geometry", stylers: [{ color: "#ebe3cd" }] },
+                    { elementType: "labels.text.fill", stylers: [{ color: "#523735" }] },
+                    { elementType: "labels.text.stroke", stylers: [{ color: "#f5f1e6" }] },
+                    {
+                        featureType: "administrative",
+                        elementType: "geometry.stroke",
+                        stylers: [{ color: "#c9b2a6" }]
+                    },
+                    {
+                        featureType: "administrative.land_parcel",
+                        elementType: "geometry.stroke",
+                        stylers: [{ color: "#dcd2be" }]
+                    },
+                    {
+                        featureType: "administrative.land_parcel",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#ae9e90" }]
+                    },
+                    {
+                        featureType: "landscape.natural",
+                        elementType: "geometry",
+                        stylers: [{ color: "#dfd2ae" }]
+                    },
+                    {
+                        featureType: "poi",
+                        elementType: "geometry",
+                        stylers: [{ color: "#dfd2ae" }]
+                    },
+                    {
+                        featureType: "poi",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#93817c" }]
+                    },
+                    {
+                        featureType: "poi.park",
+                        elementType: "geometry.fill",
+                        stylers: [{ color: "#a5b076" }]
+                    },
+                    {
+                        featureType: "poi.park",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#447530" }]
+                    },
+                    {
+                        featureType: "road",
+                        elementType: "geometry",
+                        stylers: [{ color: "#f5f1e6" }]
+                    },
+                    {
+                        featureType: "road.arterial",
+                        elementType: "geometry",
+                        stylers: [{ color: "#fdfcf8" }]
+                    },
+                    {
+                        featureType: "road.highway",
+                        elementType: "geometry",
+                        stylers: [{ color: "#f8c967" }]
+                    },
+                    {
+                        featureType: "road.highway",
+                        elementType: "geometry.stroke",
+                        stylers: [{ color: "#e9bc62" }]
+                    },
+                    {
+                        featureType: "road.highway.controlled_access",
+                        elementType: "geometry",
+                        stylers: [{ color: "#e98d58" }]
+                    },
+                    {
+                        featureType: "road.highway.controlled_access",
+                        elementType: "geometry.stroke",
+                        stylers: [{ color: "#db8555" }]
+                    },
+                    {
+                        featureType: "road.local",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#806b63" }]
+                    },
+                    {
+                        featureType: "transit.line",
+                        elementType: "geometry",
+                        stylers: [{ color: "#dfd2ae" }]
+                    },
+                    {
+                        featureType: "transit.line",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#8f7d77" }]
+                    },
+                    {
+                        featureType: "transit.line",
+                        elementType: "labels.text.stroke",
+                        stylers: [{ color: "#ebe3cd" }]
+                    },
+                    {
+                        featureType: "transit.station",
+                        elementType: "geometry",
+                        stylers: [{ color: "#dfd2ae" }]
+                    },
+                    {
+                        featureType: "water",
+                        elementType: "geometry.fill",
+                        stylers: [{ color: "#b9d3c2" }]
+                    },
+                    {
+                        featureType: "water",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#92998d" }]
+                    }
+                ],
+                { name: "Styled Map" }
+                );
+
+                const map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 12,
+                    center: new google.maps.LatLng(locations[locations.length - 1][1], locations[locations.length - 1][2]),
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                });
+
+                map.mapTypes.set("styled_map", styledMapType);
+                map.setMapTypeId("styled_map");
+
+                const infowindow = new google.maps.InfoWindow();
+
+                for (i = 0; i < locations.length; i++) {
+                    let marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                        map: map,
+                        icon: i == locations.length - 1 ? "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png" : "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                    });
+
+                    google.maps.event.addListener(marker, "click", (function (marker, i) {
+                        return function () {
+                            infowindow.setContent(locations[i][0]);
+                            infowindow.open(map, marker);
+                        }
+                    })(marker, i));
+                }
+            }
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAALkKv3-jjc88zn9dD6hGheGkZ21xW_9o&callback=initMap"></script>
+    </body>
+</html>

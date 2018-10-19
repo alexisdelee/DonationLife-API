@@ -25,7 +25,7 @@ endpoint.post("/current/near", [middleware.authentication(Role.User), middleware
     try {
         response.status(200).json({
             data: {
-                collect: await Collect.findAllNear(request.body.collect.latitude, request.body.collect.longitude)
+                collects: await Collect.findAllNear(request.body.collect.latitude, request.body.collect.longitude)
             }
         });
     } catch (e) {
