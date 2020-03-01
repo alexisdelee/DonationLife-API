@@ -1,1 +1,1 @@
-### Hackaton 2018 - Mob and Soft
+### Hackathon 2018 - Mob and Soft
